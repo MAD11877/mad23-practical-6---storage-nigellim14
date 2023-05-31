@@ -31,11 +31,11 @@ public class DBHandler extends SQLiteOpenHelper {
         // Generating and inserting 20 random users into table
         for(int i=0; i<20; i++)
         {
-            ContentValues c = new ContentValues();
-            c.put("name", "Name" + new Random().nextInt());
-            c.put("description","Description " + new Random().nextInt());
-            c.put("followed", new Random().nextInt()%2 == 0);
-            db.insert("USERS", null, c);
+            ContentValues values = new ContentValues();
+            values.put("name", "Name" + new Random().nextInt());
+            values.put("description","Description " + new Random().nextInt());
+            values.put("followed", new Random().nextInt()%2 == 0);
+            db.insert("user", null, values);
         }
     }
 

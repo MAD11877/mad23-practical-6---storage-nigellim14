@@ -11,36 +11,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*Intent recieve = getIntent();
-        int ranint = recieve.getIntExtra("RanInt", 0);
-        TextView headText = findViewById(R.id.headtext);
-        headText.setText("MAD " + ranint);
-        User newUser = new User(false);
-         */
 
+        Intent recieve = getIntent();
+        int id = recieve.getIntExtra("id", 0);
+        user = ListActivity.userList.get(id);
+
+        /*
         Intent receive = getIntent();
         Bundle data = receive.getBundleExtra("UserData");
+        */
 
+
+         /*
         //Set user information from data
         User u1 = new User();
         u1.setName(data.getString("Name"));
         u1.setId(data.getInt("Id"));
         u1.setDescription(data.getString("Desc"));
         u1.setFollowed(data.getBoolean("followStatus"));
+        */
+
 
         TextView headText = findViewById(R.id.headtext);
-        headText.setText(u1.getName());
+        headText.setText(user.getName());
         TextView desc = findViewById(R.id.longmessage);
-        desc.setText(u1.getDescription());
-        Button followbtn = findViewById(R.id.follow);
-        setFollowBtnText(u1, followbtn);
+        desc.setText(user.getDescription());
+        setFollowBtnText();
+
 
         /* onClickListener such that it will show an Alert Dialog*/
+        /*
         followbtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String text = followbtn.getText().toString();
@@ -53,15 +59,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        */
     }
 
-    public void setFollowBtnText(User u, Button followBtn){
-        if(u.isFollowed() == true){
+    public void setFollowBtnText(){
+        Button followBtn = findViewById(R.id.follow);
+        if(user.isFollowed()){
             followBtn.setText("UNFOLLOW");
         }
         else{
             followBtn.setText("FOLLOW");
         }
+    }
+
+    public void onClickFollow (View v){
+        user.setFollowed(!user.isFollowed());
+        if(user.isFollowed()){
+            Toast.makeText(this,"FOLLOWED", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"UNFOLLOWED",Toast.LENGTH_SHORT).show();
+        }
+        setFollowBtnText();
+
+        DBHandler db = new DBHandler(this);
+        db.updateUser(user);
     }
 
     @Override

@@ -19,16 +19,15 @@ import java.util.List;
 import java.util.Random;
 
 public class ListActivity extends AppCompatActivity {
+    static ArrayList<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        /*ImageView androidimgbg2 = findViewById(R.id.androidimg2);
-        ImageView androidimg2 = findViewById(R.id.androidimg2);
-         */
 
         Random rand = new Random();
+
         /*
         AlertDialog.Builder profile  = new AlertDialog.Builder(this);
         profile.setTitle("Profile")
@@ -47,21 +46,23 @@ public class ListActivity extends AppCompatActivity {
                     }
                 });
 
-         */
 
-        /*A list of 20 user object randomize name, description, value of followed*/
-        ArrayList<User> userList = new ArrayList<>();
+
         for(int i = 0; i < 20; i++){
             User user1 = new User();
             user1.setName("Name-" + rand.nextInt());
             user1.setDescription("Description-" + rand.nextInt());
             user1.setFollowed(rand.nextBoolean());
             userList.add(user1);
-        }
+
+        }*/
+
+        DBHandler db = new DBHandler(this);
+        userList= db.getUsers();
 
         /*Replace imageview with recyclerview*/
         RecyclerView recyclerView = findViewById(R.id.recycleView);
-        UsersAdapter adapter = new UsersAdapter(this, userList);
+        UsersAdapter adapter = new UsersAdapter(userList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
